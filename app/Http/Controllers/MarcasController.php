@@ -55,6 +55,8 @@ class MarcasController extends Controller
         }catch(QueryException $queryException){
             dd($queryException->getMessage());
         }
+        session()->flash('message_success', 'Marca Creada');
+
         return redirect()->route('marcas.index');
     }
 
@@ -77,7 +79,7 @@ class MarcasController extends Controller
      */
     public function edit($id)
     {
-        $marca = new Marca($id);
+        $marca = Marca::find($id);        
         return view('marca.edit')->with('marca', $marca);
     }
 
@@ -90,7 +92,15 @@ class MarcasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $marca = Marca::find($id);  
+            $marca->update($request->all());
+        }catch(QueryException $queryException){
+            dd($queryException->getMessage());
+        }
+        session()->flash('message_success', 'Marca Editada');
+
+        return  redirect()->route('marcas.index');
     }
 
     /**
@@ -101,6 +111,19 @@ class MarcasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $marca = Marca::find($id);  
+            $marca->delete();
+        }catch(QueryException $queryException){
+            if($queryException->getCode() == '23000'){
+                session()->flash('message_error', 'Debes eliminar los tipos asociados a la marca a eliminar');
+
+                return  redirect()->route('marcas.index');
+            }
+            dd($queryException->getMessage());
+        }
+        session()->flash('message_success', 'Marca Eliminada');
+
+        return  redirect()->route('marcas.index');
     }
 }

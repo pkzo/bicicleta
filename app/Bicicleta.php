@@ -15,5 +15,9 @@ class Bicicleta extends Model
     protected $guarded = [];
 
     public $timestamps = false;
+
+    public function tipo(){
+    	return $this->belongsTo(Tipo::class, 'tipo_id');
+    }
   //
 }

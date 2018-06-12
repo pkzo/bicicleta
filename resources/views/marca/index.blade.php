@@ -24,11 +24,13 @@
 				      <td>{!! $marca->nombre_marca !!}</td>
 				      <td>{!! $marca->origen !!}</td>
 				      <td>
-				      	<form method="put" action="{!! route('marcas.edit', ['id' => $marca->id]) !!}">
-				      		<button type="submit" class="btn btn-warning">Actualizar</button>			      		
+				      	<a href="{!! route('marcas.edit', ['id' => $marca->id]) !!}" class="btn btn-warning">Editar</a>
+
+				      	<form method="POST" action="{!! route('marcas.destroy', ['id' => $marca->id]) !!}">
+				      		{!! csrf_field() !!}
+				      		{!! method_field('DELETE') !!}
+				      		<button type="submit" class="btn btn-danger">Eliminar</button>		
 				      	</form>
-				      	
-				      	<button type="button" class="btn btn-danger">Eliminar</button>						
 				      </td>
 				    </tr>
 			    @endforeach			    

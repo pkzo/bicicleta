@@ -1,6 +1,6 @@
 <div class="form-group">
 	<label for="nombre">Nombre</label>
-	<input type="text" name="nombre_marca" class="form-control" id="nombre" aria-describedby="emailHelp" placeholder="Digita el nombre" value="{!! $marca->nombre or old('nombre_marca') !!}" required>
+	<input type="text" name="nombre_marca" class="form-control" id="nombre" aria-describedby="emailHelp" placeholder="Digita el nombre" value="{!! $marca->nombre_marca or old('nombre_marca') !!}" required>
 </div>
 <div class="form-group">
 	<label for="origen">Origen</label>

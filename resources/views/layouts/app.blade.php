@@ -85,6 +85,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="container">
+                        @include('layouts._messages')
                         @yield('content')    
                     </div>
                 </div>                

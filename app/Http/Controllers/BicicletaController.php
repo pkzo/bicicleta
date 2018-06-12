@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Bicicleta;
+use App\Tipo;
 
 class BicicletaController extends Controller
 {
@@ -24,7 +25,7 @@ class BicicletaController extends Controller
      */
     public function index()
     {
-        $bicicletas = Bicicleta::all();
+        $bicicletas = Bicicleta::with('tipo')->get();
 
         return view('bicicleta.index')->with('bicicletas', $bicicletas);
     }
@@ -36,7 +37,9 @@ class BicicletaController extends Controller
      */
     public function create()
     {
-        //
+        $bicicleta = new Bicicleta();  
+        $tipos = Tipo::all();
+        return view('bicicleta.create')->with(['tipos' => $tipos, 'bicicleta' => $bicicleta]);
     }
 
     /**
@@ -47,7 +50,14 @@ class BicicletaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $bicicleta = Bicicleta::create($request->all());
+        }catch(QueryException $queryException){
+            dd($queryException->getMessage());
+        }
+        session()->flash('message_success', 'Bicicleta Creada');
+
+        return redirect()->route('bicicletas.index');
     }
 
     /**
@@ -69,7 +79,9 @@ class BicicletaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $bicicleta = Bicicleta::find($id);  
+        $tipos = Tipo::all();
+        return view('bicicleta.edit')->with(['tipos' => $tipos, 'bicicleta' => $bicicleta]);
     }
 
     /**
@@ -81,7 +93,15 @@ class BicicletaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $bicicleta = Bicicleta::find($id);  
+            $bicicleta->update($request->all());
+        }catch(QueryException $queryException){
+            dd($queryException->getMessage());
+        }
+        session()->flash('message_success', 'Bicicleta Editada');
+
+        return  redirect()->route('bicicletas.index');
     }
 
     /**
@@ -92,6 +112,14 @@ class BicicletaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $bicicleta = Bicicleta::find($id);  
+            $bicicleta->delete();
+        }catch(QueryException $queryException){
+            dd($queryException->getMessage());
+        }
+        session()->flash('message_success', 'Bicicleta Eliminada');
+
+        return  redirect()->route('bicicletas.index');
     }
 }
